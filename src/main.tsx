@@ -20,7 +20,7 @@ async function bootstrap() {
 
     await msalInstance.initialize();
     await msalInstance.initialize();
-    await msalInstance.handleRedirectPromise();
+    await msalInstance.handleRedirectPromise({ navigateToLoginRequestUrl: false });
     createRoot(root).render(
       <StrictMode>
         <MsalProvider instance={msalInstance}>

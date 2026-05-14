@@ -6,7 +6,6 @@ const msalConfiguration: Configuration = {
     authority:                `https://login.microsoftonline.com/${import.meta.env.VITE_TENANT_ID as string}`,
     redirectUri:              import.meta.env.VITE_REDIRECT_URI ?? window.location.origin,
     postLogoutRedirectUri:    import.meta.env.VITE_REDIRECT_URI ?? window.location.origin,
-    navigateToLoginRequestUrl: false,
   },
   cache: {
     cacheLocation: "localStorage",
