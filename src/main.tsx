@@ -19,7 +19,8 @@ async function bootstrap() {
     const { MsalProvider } = await import("@azure/msal-react");
 
     await msalInstance.initialize();
-
+    await msalInstance.initialize();
+    await msalInstance.handleRedirectPromise();
     createRoot(root).render(
       <StrictMode>
         <MsalProvider instance={msalInstance}>
