@@ -14,3 +14,7 @@ Repos generated from this template are populated by the platform's `provisionApp
 | `VITE_APP_SLUG` | The app's slug (matches a `*.app.json` file in `public/`) |
 
 For more, see [platform docs](https://github.com/Simply-Now-Enabler/) (operator-internal).
+
+## Build script — load-bearing exit code
+
+The `build` script in `package.json` is `tsc --noEmit && vite build` by design. The `&&` chain is load-bearing: a TypeScript error must fail the entire script with a non-zero exit code so the SWA GitHub Actions deploy workflow sees a failed build step and withholds deployment. Without the `--noEmit` guard, `tsc` exits zero even when type errors are present (it still emits JS), and Oryx — the Azure Static Web Apps build agent — ships whatever stale `dist/` content remains from a prior successful build. This silent-fallback bug was surfaced on 2026-05-14 and fixed in platform build 03-C-4-e; this commit re-lands the fix in the template repo (the original fix mistakenly landed in the platform repo's `packages/frontend/` copy instead). Do not replace this script with a tolerant pattern such as `vite build` alone or any wrapper that swallows exit codes — doing so silently breaks the deploy safety guarantee. Client repos provisioned from this template inherit the script at provision time; preserving the exit-code behaviour in downstream repos is the operator's responsibility.
