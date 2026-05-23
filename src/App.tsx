@@ -16,7 +16,7 @@ import { dataverseClient } from "./services/dataverseClient.js";
 import { PageView } from "./views/PageView.js";
 
 // ─── User context ─────────────────────────────────────────────────────────────
-
+const x: number = "this is a string"; // designed to FAIL Oryx test
 export interface UserInfo { id: string; email: string; }
 const UserContext = createContext<UserInfo>({ id: "", email: "" });
 export function useUser(): UserInfo { return useContext(UserContext); }
