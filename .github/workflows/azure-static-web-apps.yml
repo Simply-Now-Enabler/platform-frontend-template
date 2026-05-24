@@ -21,6 +21,12 @@ jobs:
         with:
           node-version: '22'
       - name: Install and build
+        env:
+          VITE_DATAVERSE_URL: ${{ secrets.VITE_DATAVERSE_URL }}
+          VITE_TENANT_ID: ${{ secrets.VITE_TENANT_ID }}
+          VITE_SP_CLIENT_ID: ${{ secrets.VITE_SP_CLIENT_ID }}
+          VITE_REDIRECT_URI: ${{ secrets.VITE_REDIRECT_URI }}
+          VITE_APP_SLUG: ${{ secrets.VITE_APP_SLUG }}
         run: |
           npm ci
           npm run build
@@ -31,18 +37,9 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/"
+          app_location: "dist"
           api_location: ""
-          output_location: "dist"
-          app_build_command: "npm run build"
           skip_app_build: true
-          skip_deploy_on_missing_secrets: true
-        env:
-          VITE_DATAVERSE_URL: ${{ secrets.VITE_DATAVERSE_URL }}
-          VITE_TENANT_ID: ${{ secrets.VITE_TENANT_ID }}
-          VITE_SP_CLIENT_ID: ${{ secrets.VITE_SP_CLIENT_ID }}
-          VITE_REDIRECT_URI: ${{ secrets.VITE_REDIRECT_URI }}
-          VITE_APP_SLUG: ${{ secrets.VITE_APP_SLUG }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
